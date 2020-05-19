@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth' 
+import React from 'react';
 
 //styling imports
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 // import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -46,12 +44,6 @@ const Friend = (props) => {
      const { friend } = props
      //styling classes
      const classes = useStyles();
-
-     //placeholder data
-     const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-
-
 
      return(
      <React.Fragment>

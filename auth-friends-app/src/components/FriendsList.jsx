@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 //styling function
 const useStyles = makeStyles((theme) => ({
@@ -50,11 +52,12 @@ const useStyles = makeStyles((theme) => ({
 const FriendsList = () => {
      //styling classes
      const classes = useStyles();
-     //placeholder data
-     const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
      //setting up friends state
      const [friends, setFriends] = useState([])
+
+     //spinner
+     const [isLoading, setIsLoading] = useState(true)
 
      //setting up formValues state
      const [formValues, setFormValues] = useState({
@@ -69,7 +72,8 @@ const FriendsList = () => {
       axiosWithAuth()
         .get('/api/friends')
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
+          setIsLoading(false)
           setFriends(
             response.data
           )
@@ -98,6 +102,8 @@ const FriendsList = () => {
         .post('/api/friends', formValues)
         .then(response => {
           setFriends(response.data)
+          setIsLoading(false)
+          console.log(response.data)
         })
         .catch(err => {
           console.log(err)
@@ -157,6 +163,7 @@ const FriendsList = () => {
         {/* End hero unit */}
        <Container className={classes.cardGrid} maxWidth="md">
          <Grid container spacing={4}>
+           {isLoading && <CircularProgress />}
            {friends.map((friend) => (
              <Friend friend={friend} key={friend.id}/>
            ))}

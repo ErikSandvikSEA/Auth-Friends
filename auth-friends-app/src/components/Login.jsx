@@ -7,12 +7,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 //styling function
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +70,7 @@ export default function SignIn() {
   //set up login click handler w/axios post
   const login = e => {
        e.preventDefault()
+       setIsLoading(true)
      // make a POST request to the login endpoint
      // _if_ the creds match what's in the database, the server will return a JSON web token
      // set the token to localStorage (sessions)
@@ -80,11 +81,13 @@ export default function SignIn() {
                console.log(response)
                //response.data.payload is the key that comes from server.js
                localStorage.setItem('token', response.data.payload)
+               setIsLoading(false)
                history.push('/protected')
           })
           .catch(err => {
                console.log(err)
                alert('Invalid Email or Password')
+               setIsLoading(false)
           })
   }
 
@@ -110,6 +113,8 @@ export default function SignIn() {
             autoFocus
             type='text'
             name='username'
+            autoComplete='username'
+
             onChange={handleChange}
           />
           <TextField
@@ -121,8 +126,8 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             name='password'
+            autoComplete='current-password'
             onChange={handleChange}
           />
           <Button
@@ -134,18 +139,17 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          <Typography>
+               For this example, enter:
+          </Typography>
+          <Typography>
+               Username: 'real username'
+          </Typography>
+          <Typography>
+          Password: 'asdf'
+          </Typography>
+          {isLoading && <CircularProgress />}
+
         </form>
       </div>
     </Container>
