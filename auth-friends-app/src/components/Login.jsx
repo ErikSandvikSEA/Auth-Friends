@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 
 //styling imports
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -34,13 +34,59 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+//end styling function
+
+
+
+
+
 
 export default function SignIn() {
+  //add styling classes
   const classes = useStyles();
+
+  //add history from the useHistory hook
+  let history = useHistory()
+  
+
+  //set credentials to state
   const [credentials, setCredentials] = useState({
        username: '',
        password: '',
   })
+
+  //add isLoading state
+  const [isLoading, setIsLoading] = useState(false)
+
+  //handle changes to input values and set them to credentials state object
+  const handleChange = e => {
+       setCredentials({
+            ...credentials,
+               [e.target.name]: e.target.value
+       })
+     //   console.log(credentials)
+  }
+
+  //set up login click handler w/axios post
+  const login = e => {
+       e.preventDefault()
+     // make a POST request to the login endpoint
+     // _if_ the creds match what's in the database, the server will return a JSON web token
+     // set the token to localStorage (sessions)
+     // navigate the user to the "/protected" route
+     axiosWithAuth()
+          .post('/api/login', credentials)
+          .then(response => {
+               console.log(response)
+               //response.data.payload is the key that comes from server.js
+               localStorage.setItem('token', response.data.payload)
+               history.push('/protected')
+          })
+          .catch(err => {
+               console.log(err)
+          })
+  }
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -58,13 +104,12 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
             autoFocus
             type='text'
             name='username'
+            onChange={handleChange}
           />
           <TextField
             variant="outlined"
@@ -76,13 +121,11 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            name='password'
+            onChange={handleChange}
           />
           <Button
-            type="submit"
+            onClick={login}
             fullWidth
             variant="contained"
             color="primary"
