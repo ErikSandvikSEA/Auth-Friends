@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button'
 
 
 import Login from './components/Login'
@@ -34,16 +35,20 @@ const App = () => {
       <header className={classes.root}>
         <AppBar position="static" color='secondary'>
           <Toolbar>
+          <Button variant='outlined'>
           <Link to='/login'>
           <Typography variant="h6" className={classes.title}>
               Log In
             </Typography>
           </Link>
+          </Button>
+          <Button variant='outlined'>
           <Link to='/protected'>
             <Typography variant="h6" className={classes.title}>
               Protected Friends Page
             </Typography>
           </Link>
+          </Button>
             
           </Toolbar>
         </AppBar>
