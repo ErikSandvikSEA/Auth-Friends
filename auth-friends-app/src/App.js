@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 
 import Login from './components/Login'
-import Friends from './components/Friends'
+import Friends from './components/FriendsList'
 import PrivateRoute from './components/PrivateRoute'
 
 //styling function
