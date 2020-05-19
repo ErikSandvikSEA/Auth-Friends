@@ -1,25 +1,61 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
-function App() {
+//styling
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+
+import Login from './components/Login'
+import Friends from './components/Friends'
+import PrivateRoute from './components/PrivateRoute'
+
+//styling function
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
+const App = () => {
+  const classes = useStyles();
+
   return (
+    <Router>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className={classes.root}>
+        <AppBar position="static" color='secondary'>
+          <Toolbar>
+          <Link to='/login'>
+          <Typography variant="h6" className={classes.title}>
+              Log In
+            </Typography>
+          </Link>
+          <Link to='/protected'>
+            <Typography variant="h6" className={classes.title}>
+              Protected Friends Page
+            </Typography>
+          </Link>
+            
+          </Toolbar>
+        </AppBar>
       </header>
+
+      <Switch>
+        <PrivateRoute exact path='/protected' component={Friends} />
+        <Route path='/login' component={Login} />
+        <Route component={Login} />
+      </Switch>
     </div>
+    </Router>
   );
 }
 
